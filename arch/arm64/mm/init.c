@@ -78,6 +78,9 @@ static void __init reserve_crashkernel(void)
 		/* Current arm64 boot protocol requires 2MB alignment */
 		crash_base = memblock_find_in_range(0, addr_limit,
 				crash_size, SZ_2M);
+		if (crash_base == 0)
+			crash_base = memblock_find_in_range(0, PFN_PHYS(max_pfn),
+					crash_size, SZ_2M);
 		if (crash_base == 0) {
 			pr_warn("cannot allocate crashkernel (size:0x%llx)\n",
 				crash_size);
